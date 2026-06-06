@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FernTrail Technologies — Better software, delivered more often</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230D1711'/%3E%3Cpath d='M82 50 A32 32 0 0 1 18 50 A28 28 0 0 1 74 50 A24 24 0 0 1 26 50 A20 20 0 0 1 66 50 A16 16 0 0 1 34 50 A12 12 0 0 1 58 50 A8 8 0 0 1 42 50' fill='none' stroke='%2384C79A' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#0D1711;
+    --bg-2:#0A130D;
+    --surface:#13211A;
+    --surface-2:#172A20;
+    --ink:#E9E7D9;
+    --ink-soft:#AEB8AC;
+    --muted:#76837A;
+    --fern:#5FA877;
+    --fern-bright:#88CEA1;
+    --fern-deep:#2F6B4D;
+    --clay:#CE9A52;
+    --line:rgba(233,231,217,.12);
+    --line-soft:rgba(233,231,217,.07);
+    --serif:'Spectral',Georgia,serif;
+    --mono:'Spline Sans Mono',ui-monospace,monospace;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    overflow-x:hidden;
+  }
+  /* atmospheric depth — canopy light from above */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(120% 80% at 78% -10%, rgba(95,168,119,.16), transparent 55%),
+      radial-gradient(90% 70% at 8% 8%, rgba(47,107,77,.14), transparent 50%),
+      radial-gradient(140% 120% at 50% 120%, rgba(5,11,8,.85), transparent 60%);
+  }
+  /* fine grain */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.4'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 40px;}
+  a{color:inherit;text-decoration:none;}
+  em{font-style:italic;color:var(--fern-bright);}
+  .mono{font-family:var(--mono);font-weight:500;letter-spacing:.04em;text-transform:uppercase;font-size:.72rem;}
+
+  /* ---------- nav ---------- */
+  header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);background:rgba(13,23,17,.72);border-bottom:1px solid var(--line-soft);}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:74px;}
+  .brand{display:flex;align-items:center;gap:13px;}
+  .brand svg{width:30px;height:30px;display:block;color:var(--fern-bright);}
+  .brand .name{font-size:1.16rem;font-weight:500;letter-spacing:-.01em;}
+  .brand .name b{font-weight:600;}
+  nav.links{display:flex;align-items:center;gap:34px;}
+  nav.links a{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;color:var(--ink-soft);transition:color .2s;}
+  nav.links a:hover{color:var(--fern-bright);}
+  .btn{display:inline-flex;align-items:center;gap:.5em;white-space:nowrap;font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;padding:.72em 1.25em;border-radius:999px;transition:all .22s ease;cursor:pointer;border:none;}
+  .btn-primary{background:var(--fern);color:#0A130D;}
+  .btn-primary:hover{background:var(--fern-bright);transform:translateY(-1px);}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--fern);color:var(--fern-bright);}
+  @media(max-width:760px){nav.links a:not(.btn){display:none;}}
+
+  /* ---------- hero ---------- */
+  .hero{position:relative;padding:124px 0 100px;overflow:hidden;z-index:2;}
+  .hero .fiddle{position:absolute;right:-130px;top:-30px;width:600px;height:600px;color:var(--fern);opacity:.14;z-index:0;pointer-events:none;filter:drop-shadow(0 0 60px rgba(95,168,119,.25));}
+  .hero .wrap{position:relative;z-index:2;}
+  .kicker{display:flex;align-items:center;gap:14px;color:var(--muted);margin-bottom:30px;}
+  .kicker::after{content:"";height:1px;width:90px;background:var(--line);}
+  h1.head{display:flex;flex-direction:column;font-weight:300;font-size:clamp(2.9rem,6.6vw,5.1rem);line-height:1.06;letter-spacing:-.02em;max-width:15ch;}
+  h1.head .light,h1.head em{display:block;}
+  .head .light{color:var(--ink);}
+  .sub{margin-top:38px;max-width:46ch;font-size:1.32rem;line-height:1.5;color:var(--ink-soft);font-weight:300;}
+  .hero-cta{margin-top:44px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .trail{margin-top:70px;display:flex;align-items:center;gap:0;flex-wrap:wrap;}
+  .trail span{font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);}
+  .trail i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--fern-bright);box-shadow:0 0 8px rgba(136,206,161,.6);margin:0 16px;}
+
+  /* ---------- section frame ---------- */
+  section.band{padding:104px 0;position:relative;z-index:2;}
+  .band + .band{border-top:1px solid var(--line-soft);}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:54px;}
+  .sec-head .num{font-family:var(--mono);font-size:.8rem;color:var(--clay);letter-spacing:.08em;}
+  .sec-head h2{font-weight:300;font-size:clamp(2rem,4vw,3rem);letter-spacing:-.015em;line-height:1.08;}
+
+  /* services */
+  .services{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--line);}
+  .svc{padding:42px 34px 48px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);position:relative;background:transparent;transition:background .3s;}
+  .services .svc:nth-child(3n){border-right:none;}
+  .svc:hover{background:rgba(95,168,119,.06);}
+  .svc .rn{font-family:var(--mono);font-size:.78rem;color:var(--clay);letter-spacing:.06em;}
+  .svc h3{font-weight:500;font-size:1.62rem;line-height:1.12;margin:20px 0 16px;letter-spacing:-.01em;color:var(--ink);}
+  .svc p{font-size:1.06rem;color:var(--ink-soft);font-weight:300;line-height:1.55;}
+  .svc .leaf{position:absolute;right:22px;bottom:20px;width:26px;height:26px;color:var(--fern);opacity:.3;}
+  @media(max-width:860px){.services{grid-template-columns:1fr;}.svc{border-right:none!important;}}
+
+  /* approach */
+  .approach{display:grid;grid-template-columns:0.85fr 1.15fr;gap:64px;align-items:start;}
+  .approach .lead{font-size:1.5rem;font-weight:300;line-height:1.42;color:var(--ink);}
+  .principles{display:flex;flex-direction:column;}
+  .pr{display:grid;grid-template-columns:54px 1fr;gap:8px;padding:26px 0;border-top:1px solid var(--line);}
+  .pr:last-child{border-bottom:1px solid var(--line);}
+  .pr .rn{font-family:var(--mono);font-size:.85rem;color:var(--fern-bright);padding-top:.35em;}
+  .pr h4{font-weight:500;font-size:1.34rem;letter-spacing:-.01em;margin-bottom:7px;color:var(--ink);}
+  .pr p{font-size:1.04rem;color:var(--ink-soft);font-weight:300;max-width:52ch;}
+  @media(max-width:860px){.approach{grid-template-columns:1fr;gap:34px;}}
+
+  /* proof / bitgarth */
+  .proof{background:linear-gradient(160deg,#0F1C14,#0A130D);border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative;}
+  .proof::after{content:"";position:absolute;right:-90px;top:-150px;width:430px;height:430px;background:radial-gradient(circle at center, rgba(95,168,119,.30),transparent 62%);pointer-events:none;}
+  .proof-inner{padding:60px 64px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1.05fr;gap:54px;align-items:center;}
+  .proof .mono{color:var(--clay);}
+  .proof h3{font-weight:300;font-size:clamp(1.9rem,3.2vw,2.5rem);line-height:1.14;letter-spacing:-.015em;margin:18px 0 20px;max-width:18ch;color:var(--ink);}
+  .proof h3 em{color:var(--fern-bright);}
+  .proof p{font-size:1.12rem;font-weight:300;color:var(--ink-soft);max-width:46ch;line-height:1.55;}
+  .proof .row{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+  .proof .quietlink{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .2s;}
+  .proof .quietlink:hover{color:var(--fern-bright);}
+  /* product shot in browser chrome */
+  .shot{border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);background:#ECE8DF;}
+  .shot .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#E2DDD0;border-bottom:1px solid rgba(0,0,0,.08);}
+  .shot .bar i{width:11px;height:11px;border-radius:50%;background:#C5BFAE;display:block;}
+  .shot .bar .u{margin-left:14px;font-family:var(--mono);font-size:.66rem;color:#8A8472;letter-spacing:.02em;}
+  .shot img{width:100%;display:block;}
+  @media(max-width:860px){.proof-inner{grid-template-columns:1fr;gap:36px;padding:44px 32px;}}
+
+  /* contact */
+  .contact{text-align:center;padding:120px 0 96px;}
+  .contact .mono{color:var(--muted);}
+  .contact h2{font-weight:300;font-size:clamp(2.6rem,6vw,4.6rem);letter-spacing:-.02em;line-height:1.04;margin:24px 0 14px;}
+  .contact h2 em{color:var(--fern-bright);}
+  .contact .sub{margin:0 auto;max-width:40ch;color:var(--ink-soft);}
+  .contact .mailbtn{display:inline-flex;align-items:center;gap:.6em;margin-top:30px;font-family:var(--mono);font-size:1rem;letter-spacing:.02em;text-transform:none;color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:1em 1.9em;transition:all .22s;}
+  .contact .mailbtn:hover{background:var(--fern);color:#0A130D;border-color:var(--fern);transform:translateY(-2px);}
+  .contact .note{margin-top:22px;color:var(--muted);font-size:.98rem;font-weight:300;}
+  /* subtle pgp affordance */
+  .pgp-line{margin-top:30px;font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;color:var(--muted);display:inline-flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center;}
+  .pgp-line svg{width:13px;height:13px;color:var(--fern);opacity:.8;}
+  .pgp-trigger{color:var(--ink-soft);border-bottom:1px dotted var(--line);cursor:pointer;transition:color .2s;background:none;border-top:none;border-left:none;border-right:none;font:inherit;padding:0 0 2px;}
+  .pgp-trigger:hover{color:var(--fern-bright);border-bottom-color:var(--fern);}
+  .pgp-fp{color:var(--ink-soft);}
+
+  /* footer */
+  footer{border-top:1px solid var(--line);padding:56px 0 50px;position:relative;z-index:2;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:flex-start;gap:40px;flex-wrap:wrap;}
+  .f-brand{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .f-brand svg{width:26px;height:26px;color:var(--fern-bright);}
+  .f-brand .name{font-size:1.05rem;font-weight:500;}
+  footer .tag{color:var(--muted);font-weight:300;font-style:italic;max-width:30ch;font-size:1rem;}
+  .f-meta{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--muted);text-align:right;line-height:1.95;}
+  .f-meta a{transition:color .2s;}
+  .f-meta a:hover{color:var(--fern-bright);}
+  .f-meta .pgp-trigger{font-size:.72rem;letter-spacing:.04em;}
+  @media(max-width:680px){.f-meta{text-align:left;}}
+
+  /* ---------- PGP modal ---------- */
+  .modal{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:28px;}
+  .modal.open{display:flex;}
+  .modal-scrim{position:absolute;inset:0;background:rgba(5,11,8,.78);backdrop-filter:blur(4px);}
+  .modal-card{position:relative;z-index:2;width:min(620px,100%);max-height:86vh;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 40px 100px -30px rgba(0,0,0,.8);}
+  .modal-head{padding:24px 26px 20px;border-bottom:1px solid var(--line);}
+  .modal-head .mono{color:var(--clay);}
+  .modal-head h3{font-weight:400;font-size:1.5rem;letter-spacing:-.01em;margin:10px 0 6px;}
+  .modal-head p{font-size:.95rem;color:var(--ink-soft);font-weight:300;}
+  .modal-head .fp{display:block;margin-top:12px;font-family:var(--mono);font-size:.74rem;color:var(--fern-bright);word-break:break-all;letter-spacing:.02em;}
+  .modal-key{flex:1;overflow:auto;padding:22px 26px;background:var(--bg-2);}
+  .modal-key pre{font-family:var(--mono);font-size:.72rem;line-height:1.65;color:var(--ink-soft);white-space:pre-wrap;word-break:break-all;}
+  .modal-foot{display:flex;gap:12px;padding:18px 26px;border-top:1px solid var(--line);flex-wrap:wrap;}
+  .modal-foot .spacer{flex:1;}
+  .modal-close{position:absolute;top:16px;right:18px;z-index:3;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink-soft);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+  .modal-close:hover{color:var(--ink);border-color:var(--fern);}
+  .copied{font-family:var(--mono);font-size:.72rem;color:var(--fern-bright);align-self:center;opacity:0;transition:opacity .2s;}
+  .copied.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- reusable marks -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="fiddle" viewBox="0 0 100 100">
+    <path d="M82 50 A32 32 0 0 1 18 50 A28 28 0 0 1 74 50 A24 24 0 0 1 26 50 A20 20 0 0 1 66 50 A16 16 0 0 1 34 50 A12 12 0 0 1 58 50 A8 8 0 0 1 42 50" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="leaf" viewBox="0 0 100 100">
+    <path d="M50 92 C50 60 50 30 50 8 M50 70 C36 66 26 56 22 42 M50 70 C64 66 74 56 78 42 M50 48 C40 45 32 37 29 27 M50 48 C60 45 68 37 71 27 M50 28 C43 26 37 20 35 13 M50 28 C57 26 63 20 65 13" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="lock" viewBox="0 0 24 24">
+    <path d="M6 10V7a6 6 0 0 1 12 0v3 M5 10h14v10H5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="FernTrail Technologies home">
+      <svg><use href="#fiddle"/></svg>
+      <span class="name">Fern<b>Trail</b></span>
+    </a>
+    <nav class="links">
+      <a href="#what">What we do</a>
+      <a href="#how">How we work</a>
+      <a href="#proof">Behind BitGarth</a>
+      <a class="btn btn-primary" href="mailto:hello@ferntrail.tech">Start a conversation</a>
+    </nav>
+  </div>
+</header>
+
+<a id="top"></a>
+<section class="hero">
+  <svg class="fiddle"><use href="#fiddle"/></svg>
+  <div class="wrap">
+    <div class="kicker mono">FernTrail Technologies · Software delivery</div>
+    <h1 class="head"><span class="light">Better software,</span> <em>delivered more often.</em></h1>
+    <p class="sub">We help scale-ups and enterprise teams ship higher-quality code, faster — through lean process, deep automation, and fluent use of modern AI coding agents. Less ceremony. More delivery.</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="mailto:hello@ferntrail.tech">Start a conversation →</a>
+      <a class="btn btn-ghost" href="#proof">See what we build</a>
+    </div>
+    <div class="trail">
+      <span>Continuous delivery</span><i></i><span>Lean process</span><i></i><span>AI-assisted engineering</span>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="what">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num mono">§ 01</span>
+      <h2>What we do, <em>in three&nbsp;practices.</em></h2>
+    </div>
+    <div class="services">
+      <div class="svc">
+        <span class="rn mono">i.</span>
+        <h3>Continuous delivery &amp; automation</h3>
+        <p>Automated pipelines that carry code to production safely, many times a day. We build the path so that shipping stops being an event and becomes a habit.</p>
+        <svg class="leaf"><use href="#leaf"/></svg>
+      </div>
+      <div class="svc">
+        <span class="rn mono">ii.</span>
+        <h3>Lean process &amp; flow</h3>
+        <p>Practical Kanban and Scrum without the theatre. We keep the few ceremonies that matter and design the rest of the week for flow — not status meetings.</p>
+        <svg class="leaf"><use href="#leaf"/></svg>
+      </div>
+      <div class="svc">
+        <span class="rn mono">iii.</span>
+        <h3>AI-assisted engineering</h3>
+        <p>Hands-on, practical use of Codex, Claude, Cursor and the current wave of coding agents — applied where they genuinely raise both quality and pace.</p>
+        <svg class="leaf"><use href="#leaf"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="num mono">§ 02</span>
+      <h2>How we work.</h2>
+    </div>
+    <div class="approach">
+      <p class="lead">We've guided teams around the world toward frequent, automated delivery. The method is simple to say and harder to live — <em>so we help you live it.</em></p>
+      <div class="principles">
+        <div class="pr">
+          <span class="rn mono">i.</span>
+          <div><h4>Minimal ceremony, maximal delivery.</h4><p>Every recurring meeting earns its place or it goes. The goal is working software in front of users, not a full calendar.</p></div>
+        </div>
+        <div class="pr">
+          <span class="rn mono">ii.</span>
+          <div><h4>Automate the path to production.</h4><p>If a human does it twice, a pipeline should do it the third time. Build, test, deploy and roll back become boring — exactly as they should be.</p></div>
+        </div>
+        <div class="pr">
+          <span class="rn mono">iii.</span>
+          <div><h4>Make quality the default.</h4><p>Tests, review and observability live inside the workflow, so the quality path is also the path of least resistance — never a phase bolted on at the end.</p></div>
+        </div>
+        <div class="pr">
+          <span class="rn mono">iv.</span>
+          <div><h4>Use AI where it earns its place.</h4><p>We bring real, current fluency with coding agents and a clear eye for where they help — and where a human still has to think.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="proof">
+  <div class="wrap">
+    <div class="proof">
+      <div class="proof-inner">
+        <div class="proof-l">
+          <div class="mono">§ 03 · Built, not just advised</div>
+          <h3>We ship our own software, <em>too.</em></h3>
+          <p>FernTrail is the studio behind <strong style="font-weight:500;color:var(--ink)">BitGarth</strong> — a local-first accounting tool for self-custodied Bitcoin and Ethereum. It's held to the same standards we bring to your team: automated, well-tested, and quietly shipped. Proof that the way we work, works.</p>
+          <div class="row">
+            <a class="btn btn-primary" href="https://bitgarth.app/" target="_blank" rel="noopener">Visit BitGarth →</a>
+            <a class="quietlink" href="https://demo.bitgarth.app/" target="_blank" rel="noopener">Try the live demo</a>
+          </div>
+        </div>
+        <div class="proof-r">
+          <div class="shot">
+            <div class="bar"><i></i><i></i><i></i><span class="u">bitgarth.app</span></div>
+            <img src="images/bitgarth-wallets.png" alt="BitGarth — local-first accounting for self-custodied crypto, built by FernTrail" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact band" id="contact">
+  <div class="wrap">
+    <div class="mono">§ 04 · Get in touch</div>
+    <h2>Let's find <em>your trail.</em></h2>
+    <p class="sub">Tell us where delivery slows down. We'll tell you, honestly, whether and how we can help.</p>
+    <div><a class="mailbtn" href="mailto:hello@ferntrail.tech">✶&nbsp; hello@ferntrail.tech</a></div>
+    <div class="pgp-line">
+      <svg><use href="#lock"/></svg>
+      <span>Prefer encrypted mail?</span>
+      <button class="pgp-trigger" data-pgp>View PGP public key</button>
+      <span class="pgp-fp">·&nbsp; DE73 12FB</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="f-brand">
+        <svg><use href="#fiddle"/></svg>
+        <span class="name">FernTrail&nbsp;Technologies</span>
+      </div>
+      <p class="tag">Off the beaten path — software delivered better, and more often.</p>
+    </div>
+    <div class="f-meta">
+      <a href="mailto:hello@ferntrail.tech">hello@ferntrail.tech</a><br/>
+      <a href="https://bitgarth.app/" target="_blank" rel="noopener">bitgarth.app</a><br/>
+      <button class="pgp-trigger" data-pgp>PGP · DE73 12FB … 6A8E98</button><br/>
+      © 2026 FernTrail
+    </div>
+  </div>
+</footer>
+
+<!-- ---------- PGP modal ---------- -->
+<div class="modal" id="pgpModal" role="dialog" aria-modal="true" aria-labelledby="pgpTitle">
+  <div class="modal-scrim" data-pgp-close></div>
+  <div class="modal-card">
+    <button class="modal-close" data-pgp-close aria-label="Close">✕</button>
+    <div class="modal-head">
+      <div class="mono">Encrypted email</div>
+      <h3 id="pgpTitle">PGP public key</h3>
+      <p>For <strong style="font-weight:500;color:var(--ink)">hello@ferntrail.tech</strong> — encrypt your message to this key, or verify a signature from us. Copy the block below or download the <span style="font-family:var(--mono);font-size:.85em">.asc</span> file.</p>
+      <span class="fp">Fingerprint&nbsp; DE73 12FB 7887 FD69 B27F&nbsp; 80EF FFFA 6B92 30F6 A8E9 8</span>
+    </div>
+    <div class="modal-key">
+      <pre id="pgpKey">-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+xjMEaiHWTxYJKwYBBAHaRw8BAQdAfWHYO1ZkQfF3NlAwJJvdPZ4GK0Afx0gH
+VI9/r0U5ccjNK2hlbGxvQGZlcm50cmFpbC50ZWNoIDxoZWxsb0BmZXJudHJh
+aWwudGVjaD7CwBEEExYKAIMFgmoh1k8DCwkHCRD/prkjD2qOmEUUAAAAAAAc
+ACBzYWx0QG5vdGF0aW9ucy5vcGVucGdwanMub3Jn3bHwxgsVH28Y//l/qp95
+p1o7O6Qwqj3wvfP0OiDABf4DFQoIBBYAAgECGQECmwMCHgEWIQTecxL7eIf9
+abJ/gO//prkjD2qOmAAA43UA/23m7FMoOWl2oh6ujU1mzX4eH/GelFyuRuEl
+RffWK4q2AQC04RZNBnT1brlFWef4iRPlA6TtEeLUpGGOEA4glJdVCs44BGoh
+1k8SCisGAQQBl1UBBQEBB0BFqVQDKPcZ1OGw5Pt5S+eV6g1AXWNQe7td0lBF
+XrYpGwMBCAfCvgQYFgoAcAWCaiHWTwkQ/6a5Iw9qjphFFAAAAAAAHAAgc2Fs
+dEBub3RhdGlvbnMub3BlbnBncGpzLm9yZ3Dqa4UqFs4OjVKdWraV6zFU3ch/
++gCpoC1h2LOl/SgWApsMFiEE3nMS+3iH/Wmyf4Dv/6a5Iw9qjpgAAM/XAQDX
+u1w8sqz8KATrl5uXm5SpECeSFjfwTtE84uNk3GHeAAEA1VgSda6xfwSbA849
+6Un9NBKEY1GlUtMXhPur6hSAzQw=
+=BAVN
+-----END PGP PUBLIC KEY BLOCK-----</pre>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-primary" id="pgpCopy">Copy key</button>
+      <a class="btn btn-ghost" href="hello-ferntrail-pubkey.asc" download>Download .asc</a>
+      <span class="spacer"></span>
+      <span class="copied" id="pgpCopied">Copied ✓</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var modal=document.getElementById('pgpModal');
+  var keyEl=document.getElementById('pgpKey');
+  function open(){modal.classList.add('open');document.body.style.overflow='hidden';}
+  function close(){modal.classList.remove('open');document.body.style.overflow='';}
+  document.querySelectorAll('[data-pgp]').forEach(function(b){b.addEventListener('click',open);});
+  document.querySelectorAll('[data-pgp-close]').forEach(function(b){b.addEventListener('click',close);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});
+  var copyBtn=document.getElementById('pgpCopy');
+  var copied=document.getElementById('pgpCopied');
+  copyBtn.addEventListener('click',function(){
+    var text=keyEl.textContent;
+    function flash(){copied.classList.add('show');setTimeout(function(){copied.classList.remove('show');},1800);}
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(flash,function(){fallback(text);flash();});
+    }else{fallback(text);flash();}
+  });
+  function fallback(text){
+    var ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';
+    document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);
+  }
+})();
+</script>
+
+</body>
+</html>
