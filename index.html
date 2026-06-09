@@ -148,25 +148,6 @@
   .pr p{font-size:1.04rem;color:var(--ink-soft);font-weight:300;max-width:52ch;}
   @media(max-width:860px){.approach{grid-template-columns:1fr;gap:34px;}}
 
-  /* proof / bitgarth */
-  .proof{background:linear-gradient(160deg,#0F1C14,#0A130D);border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative;}
-  .proof::after{content:"";position:absolute;right:-90px;top:-150px;width:430px;height:430px;background:radial-gradient(circle at center, rgba(95,168,119,.30),transparent 62%);pointer-events:none;}
-  .proof-inner{padding:60px 64px;position:relative;z-index:2;display:grid;grid-template-columns:1fr 1.05fr;gap:54px;align-items:center;}
-  .proof .mono{color:var(--clay);}
-  .proof h3{font-weight:300;font-size:clamp(1.9rem,3.2vw,2.5rem);line-height:1.14;letter-spacing:-.015em;margin:18px 0 20px;max-width:18ch;color:var(--ink);}
-  .proof h3 em{color:var(--fern-bright);}
-  .proof p{font-size:1.12rem;font-weight:300;color:var(--ink-soft);max-width:46ch;line-height:1.55;}
-  .proof .row{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
-  .proof .quietlink{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .2s;}
-  .proof .quietlink:hover{color:var(--fern-bright);}
-  /* product shot in browser chrome */
-  .shot{border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);background:#ECE8DF;}
-  .shot .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#E2DDD0;border-bottom:1px solid rgba(0,0,0,.08);}
-  .shot .bar i{width:11px;height:11px;border-radius:50%;background:#C5BFAE;display:block;}
-  .shot .bar .u{margin-left:14px;font-family:var(--mono);font-size:.66rem;color:#8A8472;letter-spacing:.02em;}
-  .shot img{width:100%;display:block;}
-  @media(max-width:860px){.proof-inner{grid-template-columns:1fr;gap:36px;padding:44px 32px;}}
-
   /* contact */
   .contact{text-align:center;padding:120px 0 96px;}
   .contact .mono{color:var(--muted);}
@@ -226,16 +207,7 @@
   "description": "FernTrail Technologies helps scale-ups and enterprise teams ship higher-quality software, faster — through continuous delivery, lean process, and fluent use of modern AI coding agents.",
   "email": "hello@ferntrail.tech",
   "slogan": "Better software, delivered more often.",
-  "knowsAbout": ["Continuous delivery", "DevOps automation", "Lean software process", "AI-assisted engineering"],
-  "makesOffer": {
-    "@type": "Offer",
-    "itemOffered": {
-      "@type": "SoftwareApplication",
-      "name": "BitGarth",
-      "applicationCategory": "FinanceApplication",
-      "url": "https://bitgarth.app/"
-    }
-  }
+  "knowsAbout": ["Continuous delivery", "DevOps automation", "Lean software process", "AI-assisted engineering"]
 }
 </script>
 </head>
@@ -263,7 +235,6 @@
     <nav class="links">
       <a href="#what">What we do</a>
       <a href="#how">How we work</a>
-      <a href="#proof">Behind BitGarth</a>
       <a class="btn btn-primary" href="mailto:hello@ferntrail.tech">Start a conversation</a>
     </nav>
   </div>
@@ -345,30 +316,6 @@
   </div>
 </section>
 
-<section class="band" id="proof">
-  <div class="wrap">
-    <div class="proof">
-      <div class="proof-inner">
-        <div class="proof-l">
-          <div class="mono">§ 03 · Built, not just advised</div>
-          <h3>We ship our own software, <em>too.</em></h3>
-          <p>FernTrail is the studio behind <strong style="font-weight:500;color:var(--ink)">BitGarth</strong> — a local-first accounting tool for self-custodied Bitcoin and Ethereum. It's held to the same standards we bring to your team: automated, well-tested, and quietly shipped. Proof that the way we work, works.</p>
-          <div class="row">
-            <a class="btn btn-primary" href="https://bitgarth.app/" target="_blank" rel="noopener">Visit BitGarth →</a>
-            <a class="quietlink" href="https://demo.bitgarth.app/" target="_blank" rel="noopener">Try the live demo</a>
-          </div>
-        </div>
-        <div class="proof-r">
-          <div class="shot">
-            <div class="bar"><i></i><i></i><i></i><span class="u">bitgarth.app</span></div>
-            <img src="images/bitgarth-wallets.png" alt="BitGarth — local-first accounting for self-custodied crypto, built by FernTrail" />
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="contact band" id="contact">
   <div class="wrap">
     <div class="mono">§ 04 · Get in touch</div>
@@ -395,7 +342,6 @@
     </div>
     <div class="f-meta">
       <a href="mailto:hello@ferntrail.tech">hello@ferntrail.tech</a><br/>
-      <a href="https://bitgarth.app/" target="_blank" rel="noopener">bitgarth.app</a><br/>
       <button class="pgp-trigger" data-pgp>PGP · DE73 12FB … 6A8E98</button><br/>
       © 2026 FernTrail
     </div>
