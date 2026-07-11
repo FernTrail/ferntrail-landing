@@ -166,14 +166,18 @@
   .proof h3 em{color:var(--fern-bright);}
   .proof p{font-size:1.12rem;font-weight:300;color:var(--ink-soft);max-width:46ch;line-height:1.55;}
   .proof .row{margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
-  .proof .quietlink{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .2s;}
+  .proof .quietlink{font-family:var(--mono);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);border-bottom:1px solid var(--line);padding-bottom:2px;transition:color .2s;background:none;border-top:none;border-left:none;border-right:none;cursor:pointer;}
   .proof .quietlink:hover{color:var(--fern-bright);}
   /* product shot in browser chrome */
   .shot{border-radius:12px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 70px -30px rgba(0,0,0,.7);background:#ECE8DF;}
   .shot .bar{display:flex;align-items:center;gap:7px;padding:11px 14px;background:#E2DDD0;border-bottom:1px solid rgba(0,0,0,.08);}
   .shot .bar i{width:11px;height:11px;border-radius:50%;background:#C5BFAE;display:block;}
   .shot .bar .u{margin-left:14px;font-family:var(--mono);font-size:.66rem;color:#8A8472;letter-spacing:.02em;}
-  .shot img{width:100%;display:block;}
+  .shot img{width:100%;height:auto;display:block;}
+  .shot-zoom{display:block;width:100%;padding:0;border:none;background:none;cursor:zoom-in;position:relative;}
+  .shot-zoom:focus-visible{outline:2px solid var(--fern);outline-offset:-2px;}
+  .shot-zoom .cue{position:absolute;right:12px;bottom:12px;display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:rgba(13,23,17,.72);color:var(--fern-bright);opacity:0;transition:opacity .2s;pointer-events:none;}
+  .shot-zoom:hover .cue,.shot-zoom:focus-visible .cue{opacity:1;}
   @media(max-width:860px){.proof-inner{grid-template-columns:1fr;gap:36px;padding:44px 32px;}}
 
   /* contact */
@@ -223,6 +227,21 @@
   .modal-close:hover{color:var(--ink);border-color:var(--fern);}
   .copied{font-family:var(--mono);font-size:.72rem;color:var(--fern-bright);align-self:center;opacity:0;transition:opacity .2s;}
   .copied.show{opacity:1;}
+
+  /* ---------- screenshot lightbox ---------- */
+  .lb-card{position:relative;z-index:2;width:min(1060px,100%);display:flex;flex-direction:column;align-items:center;}
+  .lb-fig{margin:0;width:100%;display:flex;flex-direction:column;align-items:center;}
+  .lb-fig img{max-width:100%;max-height:76vh;width:auto;height:auto;display:block;border-radius:10px;border:1px solid var(--line);box-shadow:0 40px 100px -30px rgba(0,0,0,.8);background:#ECE8DF;}
+  .lb-cap{margin-top:16px;display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;justify-content:center;font-size:1rem;font-weight:300;color:var(--ink-soft);text-align:center;}
+  .lb-cap .lb-count{font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;color:var(--muted);}
+  .lb-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:42px;height:42px;border-radius:50%;border:1px solid var(--line);background:rgba(13,23,17,.72);color:var(--ink-soft);font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s;}
+  .lb-nav:hover,.lb-nav:focus-visible{color:var(--fern-bright);border-color:var(--fern);}
+  .lb-prev{left:-58px;}
+  .lb-next{right:-58px;}
+  .lb-close{position:absolute;top:-14px;right:-14px;z-index:3;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);font-size:1.05rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:color .2s,border-color .2s;}
+  .lb-close:hover,.lb-close:focus-visible{color:var(--ink);border-color:var(--fern);}
+  @media(max-width:1220px){.lb-prev{left:10px;}.lb-next{right:10px;}.lb-close{top:10px;right:10px;}}
+  @media(prefers-reduced-motion:reduce){.shot-zoom .cue,.lb-nav,.lb-close,.proof .quietlink{transition:none;}}
 </style>
 <script type="application/ld+json">
 {
@@ -363,14 +382,24 @@
           <h3>We ship our own software, <em>too.</em></h3>
           <p>FernTrail is the studio behind <strong style="font-weight:500;color:var(--ink)">BitGarth</strong> — a local-first accounting tool for self-custodied Bitcoin and Ethereum. It's held to the same standards we bring to your team: automated, well-tested, and quietly shipped. Proof that the way we work, works.</p>
           <div class="row">
-            <a class="btn btn-primary" href="https://bitgarth.app/" target="_blank" rel="noopener">Visit BitGarth →</a>
-            <a class="quietlink" href="https://demo.bitgarth.app/" target="_blank" rel="noopener">Try the live demo</a>
+            <a class="btn btn-primary" href="https://bitgarth.app/" target="_blank" rel="noopener">Get started →</a>
+            <button class="quietlink" type="button" data-shots>View more screens</button>
           </div>
         </div>
         <div class="proof-r">
           <div class="shot">
             <div class="bar"><i></i><i></i><i></i><span class="u">bitgarth.app</span></div>
-            <img src="images/bitgarth-wallets.png" alt="BitGarth — local-first accounting for self-custodied crypto, built by FernTrail" />
+            <button class="shot-zoom" type="button" data-shots aria-label="View BitGarth screenshots at full size">
+              <img src="https://bitgarth.app/assets/screenshots/wallets.webp" width="1280" height="842" loading="lazy" decoding="async"
+                   alt="BitGarth — local-first accounting for self-custodied crypto, built by FernTrail" />
+              <span class="cue" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" width="16" height="16">
+                  <circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.6"/>
+                  <path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M11 8.5v5M8.5 11h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -452,6 +481,69 @@ u1w8sqz8KATrl5uXm5SpECeSFjfwTtE84uNk3GHeAAEA1VgSda6xfwSbA849
     </div>
   </div>
 </div>
+
+<!-- ---------- BitGarth screenshot lightbox ---------- -->
+<div class="modal" id="shotModal" role="dialog" aria-modal="true" aria-label="BitGarth screenshots">
+  <div class="modal-scrim" data-shots-close></div>
+  <div class="lb-card">
+    <button class="lb-close" data-shots-close aria-label="Close">✕</button>
+    <figure class="lb-fig">
+      <img id="lbImg" src="" alt="" />
+      <figcaption class="lb-cap"><span id="lbCap"></span><span class="lb-count" id="lbCount"></span></figcaption>
+    </figure>
+    <button class="lb-nav lb-prev" data-shots-prev aria-label="Previous screenshot">←</button>
+    <button class="lb-nav lb-next" data-shots-next aria-label="Next screenshot">→</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* Screens are served from bitgarth.app so they update with every BitGarth
+     release — this site keeps no screenshot copies. Filenames must match
+     bitgarth.app/assets/screenshots/. */
+  var BASE='https://bitgarth.app/assets/screenshots/';
+  var SHOTS=[
+    {file:'wallets.webp',cap:'Wallets — every account in one place',alt:'The BitGarth wallets screen: a single net-worth figure above one wallet holding Bitcoin, Ethereum and Monero accounts.'},
+    {file:'holdings-report-2024.webp',cap:'Holdings — every wallet, one number',alt:'A 2024 holdings report totalling every wallet, up on the year.'},
+    {file:'report-2024.webp',cap:'2024 — inside one wallet, a green year',alt:'The 2024 report drilled into a single wallet, every account up on the year.'},
+    {file:'report-2025.webp',cap:'2025 — the same wallet, a red year',alt:'The same wallet a year on, in 2025, every account down on the year.'},
+    {file:'exports-hledger.webp',cap:'Exports — plain-text hledger journals',alt:'The accounting export screen showing double-entry hledger journal entries in plain text.'}
+  ];
+  var modal=document.getElementById('shotModal');
+  var img=document.getElementById('lbImg');
+  var cap=document.getElementById('lbCap');
+  var count=document.getElementById('lbCount');
+  var idx=0,lastFocus=null;
+  function show(i){
+    idx=(i+SHOTS.length)%SHOTS.length;
+    var s=SHOTS[idx];
+    img.src=BASE+s.file;img.alt=s.alt;
+    cap.textContent=s.cap;
+    count.textContent=(idx+1)+' / '+SHOTS.length;
+    new Image().src=BASE+SHOTS[(idx+1)%SHOTS.length].file;
+  }
+  function open(){
+    lastFocus=document.activeElement;
+    show(0);
+    modal.classList.add('open');document.body.style.overflow='hidden';
+    modal.querySelector('.lb-close').focus();
+  }
+  function close(){
+    modal.classList.remove('open');document.body.style.overflow='';
+    if(lastFocus&&lastFocus.focus)lastFocus.focus();
+  }
+  document.querySelectorAll('[data-shots]').forEach(function(b){b.addEventListener('click',open);});
+  document.querySelectorAll('[data-shots-close]').forEach(function(b){b.addEventListener('click',close);});
+  modal.querySelector('[data-shots-prev]').addEventListener('click',function(){show(idx-1);});
+  modal.querySelector('[data-shots-next]').addEventListener('click',function(){show(idx+1);});
+  document.addEventListener('keydown',function(e){
+    if(!modal.classList.contains('open'))return;
+    if(e.key==='Escape')close();
+    else if(e.key==='ArrowLeft')show(idx-1);
+    else if(e.key==='ArrowRight')show(idx+1);
+  });
+})();
+</script>
 
 <script>
 (function(){
